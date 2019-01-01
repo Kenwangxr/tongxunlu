@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -24,16 +25,15 @@ import android.widget.TextView;
 import com.wangxr.myapplication.adapter.CallLogAdapter;
 import com.wangxr.myapplication.adapter.ViewPageAdapter;
 import com.wangxr.myapplication.entry.CallLogEntry;
+import com.wangxr.myapplication.entry.ContactsEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  {
 
     private Context context;
-
-    public List<CallLogEntry> callLogEntries;
 
     private ViewPager viewPager;
 
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     };
-
+    BottomNavigationView navigation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,35 +81,45 @@ public class MainActivity extends AppCompatActivity {
 //            callLogEntries = loadCallLog();
 //        }
 
-        ViewPageAdapter viewPageAdapter  = new ViewPageAdapter(getSupportFragmentManager());
+        navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        ViewPageAdapter viewPageAdapter  = new ViewPageAdapter(getSupportFragmentManager(), navigation);
         viewPager = findViewById(R.id.vpager);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                switch (i){
+                    case 0:
+                        navigation.setSelectedItemId(R.id.navigation_call_log);
+                        break;
+                    case 1:
+                        navigation.setSelectedItemId(R.id.navigation_address);
+                        break;
+                    case 2:
+                        navigation.setSelectedItemId(R.id.navigation_message);
+                        break;
+                    default:break;
+
+                  }
+
+             }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
         viewPager.setAdapter(viewPageAdapter);
         viewPager.setCurrentItem(0);
         context =this;
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
-    private List<CallLogEntry> loadCallLog(){
-        List<CallLogEntry> callLogEntries = new ArrayList<>();
-        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CALL_LOG}, 5000);
-        }
-        Cursor cs = this.getContentResolver().query(CallLog.Calls.CONTENT_URI, new String[]{CallLog.Calls.CACHED_NAME,
-                CallLog.Calls.NUMBER, CallLog.Calls.DATE},null, null, CallLog.Calls.DATE);
-        while (cs != null && cs.getCount()!= 0&&cs.moveToNext()){
-            String name = cs.getString(0);
-            String number = cs.getString(1);
-            long date = cs.getLong(2);
-            CallLogEntry callLogEntry = new CallLogEntry();
-            callLogEntry.setName(name);
-            callLogEntry.setNumber(number);
-            callLogEntry.setDate(date);
-            callLogEntries.add(callLogEntry);
-        }
-        System.out.println(callLogEntries);
-        return callLogEntries;
-    }
+
 }
 
 
