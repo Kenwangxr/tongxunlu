@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_call_log"
+        android:icon="@drawable/ic_history_black_24dp"
+        android:title="@string/title_call_log" />
+
+    <item
+        android:id="@+id/navigation_address"
+        android:icon="@drawable/ic_account_box_black_24dp"
+        android:title="@string/title_address" />
+
+    <item
+        android:id="@+id/navigation_message"
+        android:icon="@drawable/ic_sms_black_24dp"
+        android:title="@string/title_message" />
+
+</menu>
