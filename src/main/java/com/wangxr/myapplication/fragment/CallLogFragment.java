@@ -33,7 +33,7 @@ public class CallLogFragment extends Fragment {
 
     private List<CallLogEntry> loadCallLog(Context context){
         List<CallLogEntry> callLogEntries = new ArrayList<>();
-        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.READ_CALL_LOG}, 5000);
         }
         Cursor cs = context.getContentResolver().query(CallLog.Calls.CONTENT_URI, new String[]{CallLog.Calls.CACHED_NAME,

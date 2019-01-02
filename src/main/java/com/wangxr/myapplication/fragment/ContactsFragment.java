@@ -34,7 +34,7 @@ public class ContactsFragment extends Fragment {
 
     private List<ContactsEntry> loadContacts(Context context){
         List<ContactsEntry> contactsEntries = new ArrayList<>();
-        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED){
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.READ_CONTACTS}, 5000);
         }
         Cursor cs = context.getContentResolver().query(ContactsContract.Contacts.CONTENT_URI, new String[]{ContactsContract.Contacts.DISPLAY_NAME, ContactsContract.Contacts.PHOTO_URI},null, null, null);

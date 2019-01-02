@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.CallLog;
+import android.provider.Telephony;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -31,11 +32,11 @@ public class MessageLogFragment extends Fragment {
 
     private List<CallLogEntry> loadCallLog(Context context){
         List<CallLogEntry> callLogEntries = new ArrayList<>();
-        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_CALL_LOG) == PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.READ_CALL_LOG}, 5000);
+        if(ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this.getActivity(), new String[]{Manifest.permission.READ_SMS}, 5000);
         }
-        Cursor cs = context.getContentResolver().query(CallLog.Calls.CONTENT_URI, new String[]{CallLog.Calls.CACHED_NAME,
-                CallLog.Calls.NUMBER, CallLog.Calls.DATE},null, null, CallLog.Calls.DATE);
+        Cursor cs = context.getContentResolver().query(Telephony.Sms.CONTENT_URI, new String[]{Telephony.Sms.CREATOR,
+                Telephony.Sms.BODY, Telephony.Sms.DATE},null, null, CallLog.Calls.DATE);
         while (cs != null && cs.getCount()!= 0&&cs.moveToNext()){
             String name = cs.getString(0);
             String number = cs.getString(1);

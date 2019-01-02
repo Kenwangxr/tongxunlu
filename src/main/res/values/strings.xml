@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MyApplication</string>
+    <string name="app_name">通讯通</string>
     <string name="title_call_log">通话记录</string>
     <string name="title_address">通讯录</string>
     <string name="title_message">短信</string>
